@@ -2,6 +2,7 @@ package com.ayman.Honor.Schools.controller;
 
 import com.ayman.Honor.Schools.model.Contact;
 import com.ayman.Honor.Schools.service.ContactService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.logging.Logger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+@Slf4j
 @Controller
 public class ContactController
 {
@@ -23,8 +24,6 @@ public class ContactController
     {
         this.contactService = contactService;
     }
-
-    private static Logger log=Logger.getLogger(ContactController.class.getName());
     @RequestMapping("/contact")
     public String displayContactPage ()
     {
