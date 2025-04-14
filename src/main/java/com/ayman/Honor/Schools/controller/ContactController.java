@@ -35,6 +35,22 @@ public class ContactController
         model.addAttribute("contact", new Contact());
         return "contact.html";
     }
+
+    @RequestMapping(value = "/saveMsg",method = POST)
+    public String saveMessage (@Valid @ModelAttribute("contact") Contact contact, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            log.error("Contact form validation failed due to :"+errors.toString());
+            return "contact.html";
+        }
+        contactService.saveMessageDetails(contact);
+        contactService.setCounter(contactService.getCounter()+1);
+        log.info("Number of times the Contact form is submitted : "+contactService.getCounter());
+        return "redirect:/contact";
+    }
+}
+//old ModelAndView
 //    @RequestMapping(value = "/saveMsg",method = POST)
 //    public ModelAndView saveMessage (@RequestParam String name , @RequestParam String mobileNum, @RequestParam String email
 //            , @RequestParam String subject, @RequestParam String message )
@@ -46,15 +62,3 @@ public class ContactController
 //        log.info("Message : " + message);
 //        return new ModelAndView("redirect:/contact");
 //    }
-    @RequestMapping(value = "/saveMsg",method = POST)
-    public String saveMessage (@Valid @ModelAttribute("contact") Contact contact, Errors errors)
-    {
-        if (errors.hasErrors())
-        {
-            log.error("Contact form validation failed due to :"+errors.toString());
-            return "contact.html";
-        }
-        contactService.saveMessageDetails(contact);
-        return "redirect:/contact";
-    }
-}
