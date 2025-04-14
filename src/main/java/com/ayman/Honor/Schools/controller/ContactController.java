@@ -49,6 +49,7 @@ public class ContactController
         log.info("Number of times the Contact form is submitted : "+contactService.getCounter());
         return "redirect:/contact";
     }
+
 }
 //old ModelAndView
 //    @RequestMapping(value = "/saveMsg",method = POST)
