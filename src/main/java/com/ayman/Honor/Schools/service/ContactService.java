@@ -1,15 +1,11 @@
 package com.ayman.Honor.Schools.service;
 
 import com.ayman.Honor.Schools.constants.HonorSchoolConstants;
-import com.ayman.Honor.Schools.controller.ContactController;
 import com.ayman.Honor.Schools.model.Contact;
 import com.ayman.Honor.Schools.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.ApplicationScope;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,5 +35,13 @@ public class ContactService
     {
         List<Contact> contactMsgs = contactRepository.findMsgsWithStatus(HonorSchoolConstants.OPEN);
         return contactMsgs;
+    }
+    public Boolean updateMsgStatus (int contactId ,  String updatedBy)
+    {
+        Boolean isUpdated  = false;
+        int result = contactRepository.updateMsgStatus(contactId,HonorSchoolConstants.CLOSE,updatedBy);
+        if (result>0)
+            isUpdated=true;
+        return isUpdated;
     }
 }
