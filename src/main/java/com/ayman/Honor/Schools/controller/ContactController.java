@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -45,11 +46,17 @@ public class ContactController
             return "contact.html";
         }
         contactService.saveMessageDetails(contact);
-        contactService.setCounter(contactService.getCounter()+1);
-        log.info("Number of times the Contact form is submitted : "+contactService.getCounter());
         return "redirect:/contact";
     }
 
+    @RequestMapping ("/displayMessages")
+    public ModelAndView displayMessages (Model model)
+    {
+        List<Contact>contactMsgs=contactService.findMsgsWithOpenStatus();
+        ModelAndView modelAndView=new ModelAndView("messages.html");
+        modelAndView.addObject("contactMsgs",contactMsgs);
+        return modelAndView;
+    }
 }
 //old ModelAndView
 //    @RequestMapping(value = "/saveMsg",method = POST)

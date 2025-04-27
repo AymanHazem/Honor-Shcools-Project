@@ -22,9 +22,11 @@ public class ProjectSecurityConfig
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
     {
-        http.csrf((csrf)->csrf.ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers(PathRequest.toH2Console()))
+        http.csrf((csrf)->csrf.ignoringRequestMatchers("/saveMsg")
+                .ignoringRequestMatchers(PathRequest.toH2Console()))
                 .authorizeHttpRequests((requests)->requests
                 .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/displayMessages").hasAnyRole("ADMIN")
                 .requestMatchers("/","/home").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/contact").permitAll()
@@ -35,8 +37,10 @@ public class ProjectSecurityConfig
                 .requestMatchers("/logout").permitAll()
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .requestMatchers("/assets/**").permitAll())
-                .formLogin(loginConfigurer ->loginConfigurer.loginPage("/login").defaultSuccessUrl("/dashboard").failureUrl("/login?error=true").permitAll())
-                .logout(logoutConfigurer ->logoutConfigurer.logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll() )
+                .formLogin(loginConfigurer ->loginConfigurer.loginPage("/login").defaultSuccessUrl("/dashboard")
+                .failureUrl("/login?error=true").permitAll())
+                .logout(logoutConfigurer ->logoutConfigurer.logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true).permitAll() )
                 .httpBasic(Customizer.withDefaults());
         http.headers().frameOptions().disable();
         return http.build();
@@ -45,7 +49,7 @@ public class ProjectSecurityConfig
     public InMemoryUserDetailsManager userDetailsService()
     {
         UserDetails user = User.withDefaultPasswordEncoder().username("user").password("123").roles("USER").build();
-        UserDetails admin = User.withDefaultPasswordEncoder().username("admin").password("123").roles("USER","ADMIN").build();
+        UserDetails admin = User.withDefaultPasswordEncoder().username("admin").password("123").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(user, admin);
     }
 }

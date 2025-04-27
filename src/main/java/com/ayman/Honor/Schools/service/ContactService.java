@@ -1,12 +1,18 @@
 package com.ayman.Honor.Schools.service;
 
+import com.ayman.Honor.Schools.constants.HonorSchoolConstants;
 import com.ayman.Honor.Schools.controller.ContactController;
 import com.ayman.Honor.Schools.model.Contact;
+import com.ayman.Honor.Schools.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.annotation.SessionScope;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
@@ -14,29 +20,24 @@ Logger static property in the class at compilation time.
 * */
 @Service
 @Slf4j
-@SessionScope //is the default
-//@RequestScope
-//@ApplicationScope
 public class ContactService
 {
-    private int counter =0;
-
-    public ContactService() {
-        System.out.println("Contact Service Bean initialized");
-    }
-
+    @Autowired
+    private ContactRepository contactRepository;
     public boolean saveMessageDetails (Contact contact)
     {
-        boolean isSaved = true;
-        log.info (contact.toString());
+        boolean isSaved = false;
+        contact.setStatus(HonorSchoolConstants.OPEN);
+        contact.setCreatedAt(LocalDateTime.now());
+        contact.setCreatedBy(HonorSchoolConstants.ANONYMOUS);
+        int res=contactRepository.saveContactMsg(contact);
+        if (res>0)
+            isSaved = true;
         return isSaved;
     }
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
+    public List<Contact> findMsgsWithOpenStatus ()
+    {
+        List<Contact> contactMsgs = contactRepository.findMsgsWithStatus(HonorSchoolConstants.OPEN);
+        return contactMsgs;
     }
 }
