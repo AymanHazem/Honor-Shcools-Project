@@ -35,4 +35,4 @@ CREATE TABLE IF NOT EXISTS `holidays`
     `created_by` varchar(50) NOT NULL,
     `updated_at` TIMESTAMP DEFAULT NULL,
     `updated_by` varchar(50) DEFAULT NULL
-    );
+);
