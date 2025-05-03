@@ -1,16 +1,23 @@
 package com.ayman.Honor.Schools.model;
-
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 /*
 @Data annotation is provided by Lombok library which generates getter, setter,
 equals(), hashCode(), toString() methods & Constructor at compile time.
 This makes our code short and clean.
 * */
 @Data
+@Entity
+@Table (name = "contact_msg") //use when POJO name and table name to matching
 
 public class Contact extends BaseEntity
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "native")
+    @GenericGenerator(name = "native" , strategy = "native")
     private int contactId;
     /*
     * @NotNull: Checks if a given field is not null but allows empty values & zero elements inside collections.

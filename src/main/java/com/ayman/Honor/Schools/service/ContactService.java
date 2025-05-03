@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /*
 @Slf4j, is a Lombok-provided annotation that will automatically generate an SLF4J
@@ -26,21 +27,23 @@ public class ContactService
         contact.setStatus(HonorSchoolConstants.OPEN);
         contact.setCreatedAt(LocalDateTime.now());
         contact.setCreatedBy(HonorSchoolConstants.ANONYMOUS);
-        int res=contactRepository.saveContactMsg(contact);
-        if (res>0)
-            isSaved = true;
+        Contact savedContact =contactRepository.save(contact);
+        if (null !=savedContact && savedContact.getContactId()>0)
+            isSaved=true;
         return isSaved;
     }
     public List<Contact> findMsgsWithOpenStatus ()
     {
-        List<Contact> contactMsgs = contactRepository.findMsgsWithStatus(HonorSchoolConstants.OPEN);
+        List<Contact> contactMsgs = contactRepository.findByStatus(HonorSchoolConstants.OPEN);
         return contactMsgs;
     }
     public Boolean updateMsgStatus (int contactId ,  String updatedBy)
     {
         Boolean isUpdated  = false;
-        int result = contactRepository.updateMsgStatus(contactId,HonorSchoolConstants.CLOSE,updatedBy);
-        if (result>0)
+        Optional<Contact> contact=contactRepository.findById(contactId);
+        contact.ifPresent(contact1 -> {contact1.setUpdatedAt(LocalDateTime.now());contact1.setStatus(HonorSchoolConstants.CLOSE);contact1.setUpdatedBy(updatedBy);});
+        Contact updatedContact=contactRepository.save(contact.get());
+        if (null!=updatedContact && updatedContact.getContactId()>0)
             isUpdated=true;
         return isUpdated;
     }

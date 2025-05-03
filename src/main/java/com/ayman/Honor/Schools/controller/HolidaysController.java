@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Controller
 public class HolidaysController
 {
@@ -32,10 +34,11 @@ public class HolidaysController
             model.addAttribute("festival",true);
         else if (null!=display && display.equals("federal"))
             model.addAttribute("federal",true);
-        List<Holiday> holidays = holidaysRepository.findAllHolidays();
+        Iterable<Holiday> holidays = holidaysRepository.findAll();
+        List <Holiday> holidaysList= StreamSupport.stream(holidays.spliterator(), false).collect(Collectors.toList());
         Holiday.Type[] types = Holiday.Type.values();
         for (Holiday.Type type : types )
-            model.addAttribute(type.toString(),(holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
+            model.addAttribute(type.toString(),(holidaysList.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
         return "holidays.html";
     }
 }
