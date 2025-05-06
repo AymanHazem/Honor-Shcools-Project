@@ -39,7 +39,11 @@ public class Person extends BaseEntity
     @Size(min=5, message="Confirm Password must be at least 5 characters long" )
     @Transient
     private String confirmPwd;
-
-
+    @OneToOne (fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id" , referencedColumnName = "addressId" , nullable = true)
+    private Address address;
+    @OneToOne (fetch = FetchType.EAGER , cascade = CascadeType.PERSIST /*(saving the entity)*/)
+    @JoinColumn(name = "role_id"/*DB*/ , referencedColumnName = "roleId"/*POJO*/ , nullable = false)
+    private Roles roles;
 
 }
