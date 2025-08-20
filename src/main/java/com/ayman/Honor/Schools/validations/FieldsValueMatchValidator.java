@@ -20,9 +20,9 @@ public class FieldsValueMatchValidator implements ConstraintValidator <FieldsVal
     {
         Object fieldValue = new  BeanWrapperImpl(value).getPropertyValue(field);
         Object fieldMatchValue = new  BeanWrapperImpl(value).getPropertyValue(fieldMatch);
-        if (null!=fieldValue)
+        if (fieldValue != null)
             return fieldValue.equals(fieldMatchValue);
-        else
-            return fieldMatchValue==null;
+         else
+            return fieldMatchValue == null;
     }
 }

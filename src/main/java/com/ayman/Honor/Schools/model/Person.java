@@ -10,8 +10,11 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 @Data
 @Entity
-@FieldsValueMatch.List({@FieldsValueMatch(field = "pwd",fieldMatch = "confirmPwd",message = "Passwords do not match!"),
-        @FieldsValueMatch(field = "email",fieldMatch = "confirmEmail",message = "Email addresses do not match!")})
+@FieldsValueMatch.List
+        ({
+                @FieldsValueMatch(field = "pwd",fieldMatch = "confirmPwd",message = "Passwords do not match!"),
+        @FieldsValueMatch(field = "email",fieldMatch = "confirmEmail",message = "Email addresses do not match!")
+        })
 public class Person extends BaseEntity
 {
     @Id
