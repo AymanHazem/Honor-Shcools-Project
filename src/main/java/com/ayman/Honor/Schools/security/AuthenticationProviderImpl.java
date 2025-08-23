@@ -31,7 +31,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider
         String password=authentication.getCredentials().toString();
         Person user = personRepository.getByEmail(email);
         if (null !=user && user.getPersonId()>0 && passwordEncoder.matches(password, user.getPwd()))
-            return new UsernamePasswordAuthenticationToken(user.getName(),null,getGrantedAuthorities(user.getRoles()));
+            return new UsernamePasswordAuthenticationToken(email,null,getGrantedAuthorities(user.getRoles()));
         else
             throw new BadCredentialsException("Invalid credentials!");
     }
