@@ -4,6 +4,10 @@ import com.ayman.Honor.Schools.model.Contact;
 import com.ayman.Honor.Schools.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +30,10 @@ public class ContactService
             isSaved=true;
         return isSaved;
     }
-    public List<Contact> findMsgsWithOpenStatus ()
+    public Page<Contact> findMsgsWithOpenStatus (int pageNum,String sortField, String sortDir)
     {
-        List<Contact> contactMsgs = contactRepository.findByStatus(HonorSchoolConstants.OPEN);
-        return contactMsgs;
+        return contactRepository.findByStatus(HonorSchoolConstants.OPEN , PageRequest.of(pageNum-1 , 5 ,
+                sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()));
     }
     public Boolean updateMsgStatus (int contactId )
     {

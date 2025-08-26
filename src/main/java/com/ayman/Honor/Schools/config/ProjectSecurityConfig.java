@@ -19,11 +19,12 @@ public class ProjectSecurityConfig
                 .ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests((requests)->requests
                 .requestMatchers("/dashboard").authenticated()
-                .requestMatchers("/displayMessages").hasAnyRole("ADMIN")
+                .requestMatchers("/displayMessages/**").hasAnyRole("ADMIN")
                 .requestMatchers("/closeMsg/**").hasAnyRole("ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/displayProfile").authenticated()
                 .requestMatchers("/updateProfile").authenticated()
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/","/home").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/contact").permitAll()
