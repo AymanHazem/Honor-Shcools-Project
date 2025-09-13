@@ -16,7 +16,7 @@ public class ProjectSecurityConfig
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
     {
         http.csrf((csrf)->csrf
-                .ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**"))
+                .ignoringRequestMatchers("/saveMsg").ignoringRequestMatchers("/public/**").ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests((requests)->requests
                 .requestMatchers("/dashboard").authenticated()
                 .requestMatchers("/displayMessages/**").hasAnyRole("ADMIN")
@@ -24,6 +24,7 @@ public class ProjectSecurityConfig
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/displayProfile").authenticated()
                 .requestMatchers("/updateProfile").authenticated()
+                .requestMatchers("/api/**").authenticated()
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/","/home").permitAll()
                 .requestMatchers("/holidays/**").permitAll()
@@ -31,6 +32,7 @@ public class ProjectSecurityConfig
                 .requestMatchers("/saveMsg").permitAll()
                 .requestMatchers("/courses").permitAll()
                 .requestMatchers("/about").permitAll()
+                .requestMatchers("/data-api/**").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/logout").permitAll()
                 .requestMatchers("/public/**").permitAll()

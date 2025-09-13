@@ -35,13 +35,11 @@ public class ContactService
         return contactRepository.findByStatus(HonorSchoolConstants.OPEN , PageRequest.of(pageNum-1 , 5 ,
                 sortDir.equals("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending()));
     }
-    public Boolean updateMsgStatus (int contactId )
+    public boolean updateMsgStatus (int contactId )
     {
-        Boolean isUpdated  = false;
-        Optional<Contact> contact=contactRepository.findById(contactId);
-        contact.ifPresent(contact1 -> {contact1.setStatus(HonorSchoolConstants.CLOSE);});
-        Contact updatedContact=contactRepository.save(contact.get());
-        if (null!=updatedContact && updatedContact.getContactId()>0)
+        boolean isUpdated  = false;
+        int  rows=contactRepository.updateStatusById(HonorSchoolConstants.CLOSE , contactId);
+        if (rows>0)
             isUpdated=true;
         return isUpdated;
     }

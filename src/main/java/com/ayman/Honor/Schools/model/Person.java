@@ -60,8 +60,8 @@ public class Person extends BaseEntity
     @JoinColumn(name = "address_id" , referencedColumnName = "addressId" , nullable = true)
     private Address address;
 
-    @OneToOne (fetch = FetchType.EAGER , cascade = CascadeType.PERSIST /*(saving the entity)*/)
-    @JoinColumn(name = "role_id"/*DB*/ , referencedColumnName = "roleId"/*POJO*/ , nullable = false)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "roleId",nullable = false)
     private Roles roles;
 
     @ManyToOne(fetch = FetchType.LAZY , optional = true)
